@@ -112,12 +112,12 @@ namespace ExternalBadass.Controllers
                                 return RedirectToAction("Edit", "user", new { userId = userObj.UserId });
                             }
 
-                            var userData = string.Format("{0};{1};{2}", userObj.UserId, userObj.Username, userObj.Email);
+                            var userData = string.Format("{0};{1};{2}", userObj.UserId, userObj.FullName, userObj.Email);
                             
                             
                             var ticket = new FormsAuthenticationTicket(
                                            2, // magic number used by FormsAuth
-                                           response.ClaimedIdentifier, // username
+                                           userObj.Username, // username
                                            DateTime.Now,
                                            DateTime.Now.AddDays(30),
                                            true, // "remember me"

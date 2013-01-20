@@ -755,3 +755,11 @@ tr.pager td {
             margin: 0;
         }
 }
+
+
+.input-append,
+.input-prepend {
+  display: inline-block;
+  vertical-align: middle;
+  margin-bottom: 10px;
+}

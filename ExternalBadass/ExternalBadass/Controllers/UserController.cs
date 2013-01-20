@@ -61,9 +61,19 @@ namespace ExternalBadass.Controllers
         //
         // GET: /User/Edit/5
 
-        public ActionResult Edit(int id = 0)
+        //public ActionResult Edit(int id = 0)
+        //{
+        //    User user = db.Users.Find(id);
+        //    if (user == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(user);
+        //}
+
+        public ActionResult Edit(string username = "")
         {
-            User user = db.Users.Find(id);
+            User user = db.Users.FirstOrDefault(u => u.Username == username);
             if (user == null)
             {
                 return HttpNotFound();
