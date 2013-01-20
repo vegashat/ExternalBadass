@@ -1,0 +1,43 @@
+﻿@model ExternalBadass.Models.Goal
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Goal</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.Username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.Username)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Activity.Name)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Activity.Name)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Quantity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Quantity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Deadline)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Deadline)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.GoalId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

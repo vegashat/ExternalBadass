@@ -9,104 +9,109 @@ using ExternalBadass.Models;
 
 namespace ExternalBadass.Controllers
 {
-    public class UserController : Controller
+    public class MeasurementController : Controller
     {
         private BadassContext db = new BadassContext();
 
         //
-        // GET: /User/
+        // GET: /Measurement/
 
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            var measurements = db.Measurements.Include(m => m.User);
+            return View(measurements.ToList());
         }
 
         //
-        // GET: /User/Details/5
+        // GET: /Measurement/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Measurement measurement = db.Measurements.Find(id);
+            if (measurement == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(measurement);
         }
 
         //
-        // GET: /User/Create
+        // GET: /Measurement/Create
 
         public ActionResult Create()
         {
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username");
             return View();
         }
 
         //
-        // POST: /User/Create
+        // POST: /Measurement/Create
 
         [HttpPost]
-        public ActionResult Create(User user)
+        public ActionResult Create(Measurement measurement)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
+                db.Measurements.Add(measurement);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", measurement.UserId);
+            return View(measurement);
         }
 
         //
-        // GET: /User/Edit/5
+        // GET: /Measurement/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Measurement measurement = db.Measurements.Find(id);
+            if (measurement == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", measurement.UserId);
+            return View(measurement);
         }
 
         //
-        // POST: /User/Edit/5
+        // POST: /Measurement/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(Measurement measurement)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                db.Entry(measurement).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", measurement.UserId);
+            return View(measurement);
         }
 
         //
-        // GET: /User/Delete/5
+        // GET: /Measurement/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Measurement measurement = db.Measurements.Find(id);
+            if (measurement == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(measurement);
         }
 
         //
-        // POST: /User/Delete/5
+        // POST: /Measurement/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
+            Measurement measurement = db.Measurements.Find(id);
+            db.Measurements.Remove(measurement);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
