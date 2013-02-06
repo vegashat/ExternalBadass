@@ -21,7 +21,7 @@ namespace ExternalBadass.Controllers
             return View(db.Activities.ToList());
         }
 
-        //
+                //
         // GET: /Activity/Details/5
 
         public ActionResult Details(int id = 0)

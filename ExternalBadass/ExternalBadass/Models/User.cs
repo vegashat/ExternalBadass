@@ -27,8 +27,8 @@ namespace ExternalBadass.Models
         public string Email { get; set; }
 
         public virtual ICollection<Measurement> Measurements { get; set; }
-        public virtual ICollection<Goal> Goals { get; set; }
-        public virtual ICollection<Activity> Activities { get; set; }
+        //public virtual ICollection<Goal> Goals { get; set; }
+        public virtual ICollection<UserActivity> Activities { get; set; }
         public virtual ICollection<Incentive> Incentives { get; set; }
 
     }

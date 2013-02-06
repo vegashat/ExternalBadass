@@ -27,7 +27,13 @@ namespace ExternalBadass.Controllers
         private static OpenIdRelyingParty _openId = new OpenIdRelyingParty();
         public ActionResult Index()
         {
-            return View("Login");
+
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return View("Login");
+            }
+
+            return View();
         }
 
 
@@ -109,7 +115,7 @@ namespace ExternalBadass.Controllers
 
                             if (userObj.FullName == null)
                             {
-                                return RedirectToAction("Edit", "user", new { userId = userObj.UserId });
+                                return RedirectToAction("EditById", "User", new { userId = userObj.UserId });
                             }
 
                             var userData = string.Format("{0};{1};{2}", userObj.UserId, userObj.FullName, userObj.Email);
@@ -138,7 +144,7 @@ namespace ExternalBadass.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Home", "Item");
+                            return RedirectToAction("Index", "Home");
                         }
                     case AuthenticationStatus.Canceled:
                         ViewData["Message"] = "Canceled at provider";

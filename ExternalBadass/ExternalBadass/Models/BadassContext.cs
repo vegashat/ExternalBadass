@@ -23,6 +23,7 @@ namespace ExternalBadass.Models
         public DbSet<Incentive> Incentives { get; set; }
         public DbSet<Measurement> Measurements { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<UserActivity> UserActivities { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

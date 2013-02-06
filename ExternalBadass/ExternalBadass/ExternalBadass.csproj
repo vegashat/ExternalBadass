@@ -195,14 +195,19 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ActivityController.cs" />
-    <Compile Include="Controllers\GoalController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IncentiveController.cs" />
     <Compile Include="Controllers\MeasurementController.cs" />
+    <Compile Include="Controllers\UserActivityController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201301132114369_InitialCreate.cs" />
+    <Compile Include="Migrations\201301132114369_InitialCreate.Designer.cs">
+      <DependentUpon>201301132114369_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="Models\BadassContext.cs" />
     <Compile Include="Models\BadassIdentity.cs" />
@@ -210,16 +215,14 @@
     <Compile Include="Models\Incentive.cs" />
     <Compile Include="Models\Measurement.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ActivityService.cs" />
     <Compile Include="Services\UserService.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\UserActivityViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-ExternalBadass-20130112180320.mdf" />
-    <Content Include="App_Data\aspnet-ExternalBadass-20130112180320_log.ldf">
-      <DependentUpon>aspnet-ExternalBadass-20130112180320.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -338,11 +341,6 @@
     <Content Include="Views\Measurement\Create.cshtml" />
     <Content Include="Views\Measurement\Edit.cshtml" />
     <Content Include="Views\Measurement\Delete.cshtml" />
-    <Content Include="Views\Goal\Index.cshtml" />
-    <Content Include="Views\Goal\Details.cshtml" />
-    <Content Include="Views\Goal\Create.cshtml" />
-    <Content Include="Views\Goal\Edit.cshtml" />
-    <Content Include="Views\Goal\Delete.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Details.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
@@ -353,12 +351,24 @@
     <Content Include="Views\Incentive\Create.cshtml" />
     <Content Include="Views\Incentive\Edit.cshtml" />
     <Content Include="Views\Incentive\Delete.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\UserActivity\Index.cshtml" />
+    <Content Include="Views\UserActivity\Details.cshtml" />
+    <Content Include="Views\UserActivity\Create.cshtml" />
+    <Content Include="Views\UserActivity\Edit.cshtml" />
+    <Content Include="Views\UserActivity\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201301132114369_InitialCreate.resx">
+      <DependentUpon>201301132114369_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
