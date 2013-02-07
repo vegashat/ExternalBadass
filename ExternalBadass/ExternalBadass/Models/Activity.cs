@@ -10,5 +10,7 @@ namespace ExternalBadass.Models
         public int ActivityId { get; set; }
         public string Name { get; set; }
         public int PointValue { get; set; }
+
+        public virtual ICollection<UserActivity> UserActivites { get; set; }
     }
 }

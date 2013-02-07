@@ -1,0 +1,43 @@
+﻿@model ExternalBadass.Models.Measurement
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Measurement</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.User.Username)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.User.Username)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Date)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Date)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Weight)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Weight)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.BMI)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.BMI)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.MeasurementId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

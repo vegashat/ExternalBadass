@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ExternalBadass.Models.Measurement>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.User.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Weight)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BMI)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Weight)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BMI)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.MeasurementId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.MeasurementId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.MeasurementId })
+        </td>
+    </tr>
+}
+
+</table>

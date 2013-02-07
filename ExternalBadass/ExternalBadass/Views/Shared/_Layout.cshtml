@@ -21,14 +21,17 @@
                 @Html.ActionLink("External Badass", "index", "menu", new { area = "" }, new { @class = "brand" })
                 <ul class='nav'>
                     
-                </ul><div class="input-prepend">
-                    <span class="add-on"><i class="icon-user icon-white"></i></span>
-                    <label>@HttpContext.Current.User.Identity.Name</label>
-                </div>
+                </ul>
+                
+                <ul class="nav pull-right">
+                    <li><a href="@Url.Action("edit","user",new{username =HttpContext.Current.User.Identity.Name})" ><i class="icon-user"></i> @HttpContext.Current.User.Identity.Name</a></li>
+                </ul>
             </div>
 
         </div>
+        
     </div>
+
 
     <div class="container">
         <div class="content">@RenderBody()</div>
@@ -42,6 +45,6 @@
 </body>
 
 
-@RenderSection("javascript", false)
+@RenderSection("Scripts", false)
 </html>
 

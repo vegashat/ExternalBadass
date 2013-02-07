@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Activities</h2>
+    <ul>
+        <li>
+            @Html.ActionLink("View Activites","Index","UserActivity", new{username = User.Identity.Name},new{@class="menulink"})
+        </li>
+        <li>
+            @Html.ActionLink("View Activites","Create","UserActivity", new{username = User.Identity.Name},new{@class="menulink"})
+        </li>
+    </ul>
+<h2>Incentives</h2>

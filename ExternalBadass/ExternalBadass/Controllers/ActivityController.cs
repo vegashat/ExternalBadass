@@ -9,33 +9,33 @@ using ExternalBadass.Models;
 
 namespace ExternalBadass.Controllers
 {
-    public class UserController : Controller
+    public class ActivityController : Controller
     {
         private BadassContext db = new BadassContext();
 
         //
-        // GET: /User/
+        // GET: /Activity/
 
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            return View(db.Activities.ToList());
         }
 
-        //
-        // GET: /User/Details/5
+                //
+        // GET: /Activity/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Activity activity = db.Activities.Find(id);
+            if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(activity);
         }
 
         //
-        // GET: /User/Create
+        // GET: /Activity/Create
 
         public ActionResult Create()
         {
@@ -43,80 +43,70 @@ namespace ExternalBadass.Controllers
         }
 
         //
-        // POST: /User/Create
+        // POST: /Activity/Create
 
         [HttpPost]
-        public ActionResult Create(User user)
+        public ActionResult Create(Activity activity)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
+                db.Activities.Add(activity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(user);
+            return View(activity);
         }
 
         //
-        // GET: /User/Edit/5
+        // GET: /Activity/Edit/5
 
-        public ActionResult EditById(int userId = 0)
+        public ActionResult Edit(int id = 0)
         {
-            User user = db.Users.Find(userId);
-            if (user == null)
+            Activity activity = db.Activities.Find(id);
+            if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View("Edit",user);
-        }
-
-        public ActionResult Edit(string username = "")
-        {
-            User user = db.Users.FirstOrDefault(u => u.Username == username);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
+            return View(activity);
         }
 
         //
-        // POST: /User/Edit/5
+        // POST: /Activity/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(Activity activity)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                db.Entry(activity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(user);
+            return View(activity);
         }
 
         //
-        // GET: /User/Delete/5
+        // GET: /Activity/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Activity activity = db.Activities.Find(id);
+            if (activity == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(activity);
         }
 
         //
-        // POST: /User/Delete/5
+        // POST: /Activity/Delete/52
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
+            Activity activity = db.Activities.Find(id);
+            db.Activities.Remove(activity);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

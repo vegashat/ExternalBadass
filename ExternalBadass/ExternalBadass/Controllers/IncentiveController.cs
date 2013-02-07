@@ -9,114 +9,109 @@ using ExternalBadass.Models;
 
 namespace ExternalBadass.Controllers
 {
-    public class UserController : Controller
+    public class IncentiveController : Controller
     {
         private BadassContext db = new BadassContext();
 
         //
-        // GET: /User/
+        // GET: /Incentive/
 
         public ActionResult Index()
         {
-            return View(db.Users.ToList());
+            var incentives = db.Incentives.Include(i => i.User);
+            return View(incentives.ToList());
         }
 
         //
-        // GET: /User/Details/5
+        // GET: /Incentive/Details/5
 
         public ActionResult Details(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Incentive incentive = db.Incentives.Find(id);
+            if (incentive == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(incentive);
         }
 
         //
-        // GET: /User/Create
+        // GET: /Incentive/Create
 
         public ActionResult Create()
         {
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username");
             return View();
         }
 
         //
-        // POST: /User/Create
+        // POST: /Incentive/Create
 
         [HttpPost]
-        public ActionResult Create(User user)
+        public ActionResult Create(Incentive incentive)
         {
             if (ModelState.IsValid)
             {
-                db.Users.Add(user);
+                db.Incentives.Add(incentive);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
+            return View(incentive);
         }
 
         //
-        // GET: /User/Edit/5
+        // GET: /Incentive/Edit/5
 
-        public ActionResult EditById(int userId = 0)
+        public ActionResult Edit(int id = 0)
         {
-            User user = db.Users.Find(userId);
-            if (user == null)
+            Incentive incentive = db.Incentives.Find(id);
+            if (incentive == null)
             {
                 return HttpNotFound();
             }
-            return View("Edit",user);
-        }
-
-        public ActionResult Edit(string username = "")
-        {
-            User user = db.Users.FirstOrDefault(u => u.Username == username);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
+            return View(incentive);
         }
 
         //
-        // POST: /User/Edit/5
+        // POST: /Incentive/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(User user)
+        public ActionResult Edit(Incentive incentive)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(user).State = EntityState.Modified;
+                db.Entry(incentive).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(user);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
+            return View(incentive);
         }
 
         //
-        // GET: /User/Delete/5
+        // GET: /Incentive/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            Incentive incentive = db.Incentives.Find(id);
+            if (incentive == null)
             {
                 return HttpNotFound();
             }
-            return View(user);
+            return View(incentive);
         }
 
         //
-        // POST: /User/Delete/5
+        // POST: /Incentive/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            User user = db.Users.Find(id);
-            db.Users.Remove(user);
+            Incentive incentive = db.Incentives.Find(id);
+            db.Incentives.Remove(incentive);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
