@@ -103,8 +103,6 @@ namespace ExternalBadass.Controllers
                                 userObj.Gender = sreg.Gender  ?? Gender.Male;
 
                                 _userService.SaveUser(userObj);
-
-                                
                             }
 
                             if (userObj.FullName == null)
