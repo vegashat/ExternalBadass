@@ -34,7 +34,7 @@ namespace ExternalBadass.ViewModels
         {
             get
             {
-                return new SelectList(Activities, "ActvityId", "Name");
+                return new SelectList(Activities, "ActivityId", "Name");
             }
         }
 

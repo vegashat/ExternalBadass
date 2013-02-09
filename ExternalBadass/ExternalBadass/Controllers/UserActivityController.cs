@@ -25,6 +25,8 @@ namespace ExternalBadass.Controllers
                 activities = db.Users.FirstOrDefault(u => u.Username == username).Activities.ToList();
             }
 
+            ViewBag.Username = username;
+
             return View(activities);
         }
 
@@ -53,23 +55,29 @@ namespace ExternalBadass.Controllers
 
             var model = new UserActivityViewModel(users, activities, currentUser);
 
-            return View();
+            return View(model);
         }
 
         //
         // POST: /UserActivity/Create
 
         [HttpPost]
-        public ActionResult Create(UserActivity useractivity)
+        public ActionResult Create(UserActivity userActivity)
         {
             if (ModelState.IsValid)
             {
-                db.UserActivities.Add(useractivity);
+                userActivity.UserId = userActivity.User.UserId;
+                userActivity.ActivityId = userActivity.Activity.ActivityId;
+
+                userActivity.User = db.Users.Find(userActivity.UserId);
+                userActivity.Activity = db.Activities.Find(userActivity.ActivityId);
+
+                db.UserActivities.Add(userActivity);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index", new { username = useractivity.User.Username });
+            return RedirectToAction("Index", new { username = userActivity.User.Username });
         }
 
         //

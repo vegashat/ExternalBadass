@@ -12,19 +12,25 @@
     <fieldset>
         <legend>UserActivity</legend>
 
-            @Html.Hidden("UserActivity.User.Username", Model.CurrentUser.Username);
+            @Html.Hidden("UserActivity.User.Username", Model.CurrentUser.Username)
 
          <div class="editor-label">
             @Html.LabelFor(model => model.CurrentUser.Username)
         </div>
         <div class="editor-field">
-            @Html.DropDownList("UserActivity.UserId", Model.UserSelectList)
+            @Html.DropDownList("UserActivity.User.UserId", Model.UserSelectList)
+        </div>
+         <div class="editor-label">
+            <label for="UserActivity.ActivityId">Date</label>
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("UserActivity.Date",DateTime.Now.ToShortDateString() )
         </div>
          <div class="editor-label">
             <label for="UserActivity.ActivityId">Activity</label>
         </div>
         <div class="editor-field">
-            @Html.DropDownList("UserActivity.ActivityId", Model.ActivitySelectList)
+            @Html.DropDownList("UserActivity.Activity.ActivityId", Model.ActivitySelectList)
         </div>
 
         <p>

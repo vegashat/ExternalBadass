@@ -13,6 +13,8 @@ namespace ExternalBadass.Models
         public int UserId { get; set; }
         [Key, Column(Order = 1)]
         public int ActivityId { get; set; }
+        [Key, Column(Order = 3)]
+        public DateTime Date { get; set; }
 
         public User User { get; set; }
         public Activity Activity { get; set; }
