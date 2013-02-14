@@ -67,7 +67,7 @@ namespace ExternalBadass.Controllers
                 db.Incentives.Add(incentive);
                 db.SaveChanges();
 
-                _uaService.CalculateIncentives(incentive.User.Username);
+                _uaService.CalculateIncentives(db.Users.Find(incentive.UserId).Username);
 
                 return RedirectToAction("Index");
             }

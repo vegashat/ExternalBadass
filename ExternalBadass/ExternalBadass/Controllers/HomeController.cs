@@ -2,19 +2,23 @@
 using DotNetOpenAuth.OpenId;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
+using ExternalBadass.Models;
 using ExternalBadass.Services;
+using System.Data;
+using System.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using ExternalBadass.ViewModels;
 
 namespace ExternalBadass.Controllers
 {
     public class HomeController : Controller
     {
-
+        private BadassContext db = new BadassContext();
         UserService _userService;
 
         public HomeController()
@@ -33,7 +37,11 @@ namespace ExternalBadass.Controllers
                 return View("Login");
             }
 
-            return View();
+            var incentives = db.Incentives.Include(i => i.User).Where(i => i.User.Username == User.Identity.Name);
+            var userActivities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == User.Identity.Name);
+            var model = new CurrentStatusViewModel(incentives.ToList(), userActivities.ToList());
+
+            return View(model);
         }
 
 

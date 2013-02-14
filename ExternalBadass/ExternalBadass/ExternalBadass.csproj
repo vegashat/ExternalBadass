@@ -230,6 +230,7 @@
     <Compile Include="Services\ActivityService.cs" />
     <Compile Include="Services\UserActivityService.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="ViewModels\CurrentStatusViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\UserActivityViewModel.cs" />
   </ItemGroup>
