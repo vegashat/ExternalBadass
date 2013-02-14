@@ -8,7 +8,7 @@
 
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-
+    <link href="~/Content/datepicker.css" rel="stylesheet" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -43,8 +43,20 @@
         </footer>
     </div>
 </body>
-
+<script src="~/Scripts/jquery-1.7.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/bootstrap-datepicker.js"></script>
 
 @RenderSection("Scripts", false)
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('.datepicker').datepicker()
+        });
+
+    </script>
+
 </html>
 

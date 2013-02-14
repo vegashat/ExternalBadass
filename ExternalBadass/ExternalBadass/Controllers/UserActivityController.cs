@@ -7,12 +7,19 @@ using System.Web;
 using System.Web.Mvc;
 using ExternalBadass.Models;
 using ExternalBadass.ViewModels;
+using ExternalBadass.Services;
 
 namespace ExternalBadass.Controllers
 {
     public class UserActivityController : Controller
     {
         private BadassContext db = new BadassContext();
+        UserActivityService _uaService = null;
+
+        public UserActivityController()
+        {
+             _uaService = new UserActivityService(db);
+        }
 
         //
         // GET: /UserActivity/vegashat
@@ -22,7 +29,7 @@ namespace ExternalBadass.Controllers
 
             if (db.Users.Any(u => u.Username == username))
             {
-                activities = db.Users.FirstOrDefault(u => u.Username == username).Activities.ToList();
+                activities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == username);
             }
 
             ViewBag.Username = username;
@@ -74,7 +81,11 @@ namespace ExternalBadass.Controllers
 
                 db.UserActivities.Add(userActivity);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+
+                _uaService.CalculateIncentives(userActivity.User.Username);
+
+                return RedirectToAction("Index", new { username = userActivity.User.Username });
+                
             }
 
             return RedirectToAction("Index", new { username = userActivity.User.Username });
@@ -83,9 +94,9 @@ namespace ExternalBadass.Controllers
         //
         // GET: /UserActivity/Edit/5
 
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(int userId, int activityId, DateTime date)
         {
-            UserActivity useractivity = db.UserActivities.Find(id);
+            UserActivity useractivity = db.UserActivities.FirstOrDefault(ua => ua.UserId == userId && ua.ActivityId == activityId && ua.Date == date);
             if (useractivity == null)
             {
                 return HttpNotFound();
@@ -109,32 +120,24 @@ namespace ExternalBadass.Controllers
             }
             ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", useractivity.UserId);
             ViewBag.ActivityId = new SelectList(db.Activities, "ActivityId", "Name", useractivity.ActivityId);
+
+
+            _uaService.CalculateIncentives(useractivity.User.Username);
+
             return View(useractivity);
         }
 
-        //
-        // GET: /UserActivity/Delete/5
-
-        public ActionResult Delete(int id = 0)
+        public ActionResult Delete(int userId, int activityId, DateTime date)
         {
-            UserActivity useractivity = db.UserActivities.Find(id);
-            if (useractivity == null)
-            {
-                return HttpNotFound();
-            }
-            return View(useractivity);
-        }
-
-        //
-        // POST: /UserActivity/Delete/5
-
-        [HttpPost, ActionName("Delete")]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            UserActivity useractivity = db.UserActivities.Find(id);
-            db.UserActivities.Remove(useractivity);
+            UserActivity useractivity = db.UserActivities.Include(ua => ua.User).FirstOrDefault(ua => ua.UserId == userId && ua.ActivityId == activityId && ua.Date == date);
+            var username = useractivity.User.Username;
+            
+            db.UserActivities.Remove(useractivity); 
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            _uaService.CalculateIncentives(username);
+
+            return RedirectToAction("Index", new { username = username });
         }
 
         protected override void Dispose(bool disposing)

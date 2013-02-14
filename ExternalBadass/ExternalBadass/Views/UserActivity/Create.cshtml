@@ -24,7 +24,7 @@
             <label for="UserActivity.ActivityId">Date</label>
         </div>
         <div class="editor-field">
-            @Html.TextBox("UserActivity.Date",DateTime.Now.ToShortDateString() )
+            @Html.TextBox("UserActivity.Date", DateTime.Now.ToShortDateString(), new { @class = "datepicker" })
         </div>
          <div class="editor-label">
             <label for="UserActivity.ActivityId">Activity</label>

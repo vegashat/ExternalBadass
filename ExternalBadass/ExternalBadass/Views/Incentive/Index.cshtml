@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", new { username = ViewBag.Username })
 </p>
 <table>
     <tr>
@@ -16,6 +16,15 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.PointTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PointsEarned)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PercentComplete)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Deadline)
@@ -33,6 +42,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PointTotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PointsEarned)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PercentComplete)
+        </td>        
+        <td>
+            @Html.DisplayFor(modelItem => item.StartDate)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Deadline)

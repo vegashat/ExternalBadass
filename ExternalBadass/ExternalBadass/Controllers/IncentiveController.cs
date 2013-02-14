@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ExternalBadass.Models;
+using ExternalBadass.Services;
 
 namespace ExternalBadass.Controllers
 {
@@ -13,12 +14,22 @@ namespace ExternalBadass.Controllers
     {
         private BadassContext db = new BadassContext();
 
+        UserActivityService _uaService = null;
+
+        public IncentiveController()
+        {
+             _uaService = new UserActivityService(db);
+        }
+
         //
         // GET: /Incentive/
 
-        public ActionResult Index()
+        public ActionResult Index(string username)
         {
-            var incentives = db.Incentives.Include(i => i.User);
+            var incentives = db.Incentives.Include(i => i.User).Where(i => i.User.Username == username);
+
+            ViewBag.Username = username;
+
             return View(incentives.ToList());
         }
 
@@ -38,9 +49,10 @@ namespace ExternalBadass.Controllers
         //
         // GET: /Incentive/Create
 
-        public ActionResult Create()
+        public ActionResult Create(string username)
         {
-            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username");
+            var user = db.Users.FirstOrDefault(u => u.Username == username);
+            ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", user.UserId);
             return View();
         }
 
@@ -54,6 +66,9 @@ namespace ExternalBadass.Controllers
             {
                 db.Incentives.Add(incentive);
                 db.SaveChanges();
+
+                _uaService.CalculateIncentives(incentive.User.Username);
+
                 return RedirectToAction("Index");
             }
 
@@ -85,6 +100,9 @@ namespace ExternalBadass.Controllers
             {
                 db.Entry(incentive).State = EntityState.Modified;
                 db.SaveChanges();
+
+                _uaService.CalculateIncentives(incentive.User.Username);
+
                 return RedirectToAction("Index");
             }
             ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
@@ -113,6 +131,9 @@ namespace ExternalBadass.Controllers
             Incentive incentive = db.Incentives.Find(id);
             db.Incentives.Remove(incentive);
             db.SaveChanges();
+
+           
+
             return RedirectToAction("Index");
         }
 
