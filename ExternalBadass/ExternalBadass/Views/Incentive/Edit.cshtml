@@ -29,12 +29,20 @@
             @Html.EditorFor(model => model.PointTotal)
             @Html.ValidationMessageFor(model => model.PointTotal)
         </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.StartDate)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.StartDate, new { @class = "datepicker" })
+            @Html.ValidationMessageFor(model => model.StartDate)
+        </div>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Deadline)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Deadline)
+            @Html.TextBoxFor(model => model.Deadline, new { @class = "datepicker" })
             @Html.ValidationMessageFor(model => model.Deadline)
         </div>
 

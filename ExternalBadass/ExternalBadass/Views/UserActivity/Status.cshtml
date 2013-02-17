@@ -1,0 +1,125 @@
+﻿@model ExternalBadass.ViewModels.CurrentStatusViewModel
+
+@{
+    ViewBag.Title = "Status";
+}
+
+<section id="current-incentive-progress">
+
+    <div class="chart-container">
+        
+        @foreach (var breakdown in Model.IncentiveBreakdowns.OrderBy(i => i.Incentive.Deadline))
+        {
+            <div class="chart">
+                <h3 class="center-text">@breakdown.Incentive.Description</h3>
+                <h4 class="center-text">@breakdown.Incentive.StartDate.ToShortDateString() - @breakdown.Incentive.Deadline.ToShortDateString()</h4>
+                <div id="incentive_@(breakdown.Incentive.IncentiveId)"></div>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+
+    <script type="text/javascript">
+
+
+        var w = 320,                       // width and height, natch
+            h = 320,
+            r = Math.min(w, h) / 2,        // arc radius
+            dur = 750,                     // duration, in milliseconds
+            color = d3.scale.category10(),
+            donut = d3.layout.pie().sort(null),
+            arc = d3.svg.arc().innerRadius(r - 70).outerRadius(r - 20);
+
+        // ---------------------------------------------------------------------
+
+        @foreach (var breakdown in @Model.IncentiveBreakdowns)
+        {
+            <text>
+        var id = "@breakdown.Incentive.IncentiveId";
+        var centerLabel = '@(Math.Round(breakdown.Incentive.PercentComplete * 100, 0))' + '%'
+
+        var labels = [];
+        var percentArray = [];
+
+            @foreach (var activity in breakdown.ActivityTotals)
+            {
+                @: labels.push('@(activity.Name)');
+                        @: percentArray.push(@activity.PointTotal);
+            }
+
+        var data = { label: '@breakdown.Incentive.Description', pct: percentArray }
+        addDonut(id, centerLabel, labels, data);
+            </text>
+        }
+
+        function addDonut(id, centerLabel, activeLabels, activeData) {
+            var svg = d3.select("#incentive_" + id).append("svg:svg")
+                .attr("width", w).attr("height", h);
+
+            var arc_grp = svg.append("svg:g")
+                .attr("class", "arcGrp")
+                .attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
+
+            var label_group = svg.append("svg:g")
+                .attr("class", "lblGroup")
+                .attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
+
+            // GROUP FOR CENTER TEXT
+            var center_group = svg.append("svg:g")
+                .attr("class", "ctrGroup")
+                .attr("transform", "translate(" + (w / 2) + "," + (h / 2) + ")");
+
+            // CENTER LABEL
+            var pieLabel = center_group.append("svg:text")
+                .attr("dy", ".7em").attr("class", "chartLabel")
+                .attr("text-anchor", "middle")
+                .text(centerLabel);
+
+            // DRAW ARC PATHS
+            var arcs = arc_grp.selectAll("path")
+                .data(donut(data.pct));
+            arcs.enter().append("svg:path")
+                .attr("stroke", "white")
+                .attr("stroke-width", 0.5)
+                .attr("fill", function (d, i) { return color(i); })
+                .attr("d", arc)
+                .each(function (d) { this._current = d });
+
+            // DRAW SLICE LABELS
+            var sliceLabel = label_group.selectAll("text")
+                .data(donut(data.pct));
+            sliceLabel.enter().append("svg:text")
+                .attr("class", "arcLabel")
+                .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                .attr("text-anchor", "middle")
+                .text(function (d, i) { return activeLabels[i]; });
+
+
+            arcs.data(donut(activeData.pct)); // recompute angles, rebind data
+            arcs.transition().ease("elastic").duration(dur).attrTween("d", arcTween);
+
+            sliceLabel.data(donut(activeData.pct));
+            sliceLabel.transition().ease("elastic").duration(dur)
+                .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                .style("fill-opacity", function (d) { return d.value == 0 ? 1e-6 : 1; });
+
+            pieLabel.text(centerLabel);
+        }
+
+        // --------- "PAY NO ATTENTION TO THE MAN BEHIND THE CURTAIN" ---------
+
+        // Store the currently-displayed angles in this._current.
+        // Then, interpolate from this._current to the new angles.
+        function arcTween(a) {
+            var i = d3.interpolate(this._current, a);
+            this._current = i(0);
+            return function (t) {
+                return arc(i(t));
+            };
+        }
+
+
+    </script>
+}

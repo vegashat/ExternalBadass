@@ -4,12 +4,12 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Incentives for @ViewBag.Username</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create", new { username = ViewBag.Username })
 </p>
-<table>
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.User.Username)

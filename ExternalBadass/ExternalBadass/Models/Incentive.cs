@@ -10,9 +10,13 @@ namespace ExternalBadass.Models
     {
         public int IncentiveId { get; set; }
         public int UserId { get; set; }
-        public int PointTotal { get; set; }
-        public int PointsEarned { get; set; }
 
+        [Display(Name="Points")]
+        public int PointTotal { get; set; }
+        [Display(Name = "Points Earned")]
+        public int PointsEarned { get; set; }
+        
+        [Display(Name="Percent")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:P2}")]
         public decimal PercentComplete
         {
@@ -24,7 +28,11 @@ namespace ExternalBadass.Models
             }
         }
 
+        [Display(Name = "Starts")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime StartDate { get; set; }
+        [Display(Name = "Ends")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
         public DateTime Deadline { get; set; }
         public string Description { get; set; }
 

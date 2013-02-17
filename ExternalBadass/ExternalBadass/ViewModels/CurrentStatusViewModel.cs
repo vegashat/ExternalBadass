@@ -61,7 +61,12 @@ namespace ExternalBadass.ViewModels
                         var breakdown = new IncentiveBreakdown();
 
                         breakdown.Incentive = incentive;
-                        breakdown.ActivityTotals = GetActivityTotals(incentive.StartDate, incentive.Deadline);
+
+                        //Just do complete/incomplete for nowre
+                        //breakdown.ActivityTotals = GetActivityTotals(incentive.StartDate, incentive.Deadline);
+
+                        breakdown.ActivityTotals = new List<ActivityTotal>();
+                        breakdown.ActivityTotals.Add(new ActivityTotal() { Name = "Complete", PointTotal = GetActivityTotals(incentive.StartDate, incentive.Deadline).Sum(at => at.PointTotal) });
 
                         if (incentive.PointsEarned < incentive.PointTotal)
                         {

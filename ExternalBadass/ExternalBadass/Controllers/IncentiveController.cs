@@ -69,11 +69,11 @@ namespace ExternalBadass.Controllers
 
                 _uaService.CalculateIncentives(db.Users.Find(incentive.UserId).Username);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { Username = db.Users.Find(incentive.UserId).Username });
             }
 
             ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
-            return View(incentive);
+            return View("index", new { Username = db.Users.Find(incentive.UserId).Username });
         }
 
         //
@@ -96,17 +96,19 @@ namespace ExternalBadass.Controllers
         [HttpPost]
         public ActionResult Edit(Incentive incentive)
         {
+            var username = db.Users.Find(incentive.UserId).Username;
+
             if (ModelState.IsValid)
             {
                 db.Entry(incentive).State = EntityState.Modified;
                 db.SaveChanges();
 
-                _uaService.CalculateIncentives(incentive.User.Username);
+                _uaService.CalculateIncentives(username);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("index", new { username = username });
             }
             ViewBag.UserId = new SelectList(db.Users, "UserId", "Username", incentive.UserId);
-            return View(incentive);
+            return RedirectToAction("index", new { username = username });
         }
 
         //

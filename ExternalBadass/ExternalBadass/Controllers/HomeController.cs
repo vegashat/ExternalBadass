@@ -37,11 +37,7 @@ namespace ExternalBadass.Controllers
                 return View("Login");
             }
 
-            var incentives = db.Incentives.Include(i => i.User).Where(i => i.User.Username == User.Identity.Name);
-            var userActivities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == User.Identity.Name);
-            var model = new CurrentStatusViewModel(incentives.ToList(), userActivities.ToList());
-
-            return View(model);
+            return RedirectToAction("Status", "UserActivity", new {username=User.Identity.Name });
         }
 
 

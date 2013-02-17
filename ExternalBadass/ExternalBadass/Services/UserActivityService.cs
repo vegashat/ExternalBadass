@@ -22,7 +22,14 @@ namespace ExternalBadass.Services
             {
                 var activities = _context.UserActivities.Where(ua => ua.User.Username == username && ua.Date >= incentive.StartDate && ua.Date <= incentive.Deadline);
 
-                incentive.PointsEarned = activities.Sum(a => a.Activity.PointValue);
+                int points = 0;
+
+                if (activities.Any())
+                {
+                    points = activities.Sum(a => a.Activity.PointValue);
+                }
+                
+                incentive.PointsEarned = points;
             }
 
             _context.SaveChanges();

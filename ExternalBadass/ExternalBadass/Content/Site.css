@@ -763,3 +763,25 @@ tr.pager td {
   vertical-align: middle;
   margin-bottom: 10px;
 }
+
+.chart-container {
+    width : 90%;
+    margin-left : auto;
+    margin-right : auto;
+}
+
+.chart {
+  width : 47%;
+  margin : 1em;
+  display : inline-block;
+  text-align : center;
+}
+
+.center-text {
+    text-align:center;
+    width : 100%;
+}
+
+.chartLabel {
+    font-size : 2em;
+}
