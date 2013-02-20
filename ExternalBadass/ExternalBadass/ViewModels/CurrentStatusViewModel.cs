@@ -26,11 +26,13 @@ namespace ExternalBadass.ViewModels
     {
         public IEnumerable<Incentive> Incentives { get; set; }
         public IEnumerable<UserActivity> UserActivities { get; set; }
+        public IEnumerable<User> Users { get; set; }
 
-        public CurrentStatusViewModel(IEnumerable<Incentive> incentives, IEnumerable<UserActivity> userActivities)
+        public CurrentStatusViewModel(IEnumerable<Incentive> incentives, IEnumerable<UserActivity> userActivities, IEnumerable<User> users)
         {
-            Incentives = incentives;
+            Incentives     = incentives;
             UserActivities = userActivities;
+            Users          = users;
         }
 
 

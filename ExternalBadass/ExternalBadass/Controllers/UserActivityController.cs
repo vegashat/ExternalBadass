@@ -39,9 +39,10 @@ namespace ExternalBadass.Controllers
 
         public ActionResult Status(string username)
         {
-            var incentives = db.Incentives.Include(i => i.User).Where(i => i.User.Username == User.Identity.Name);
-            var userActivities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == User.Identity.Name);
-            var model = new CurrentStatusViewModel(incentives.ToList(), userActivities.ToList());
+            var incentives = db.Incentives.Include(i => i.User).Where(i => i.User.Username == username);
+            var userActivities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == username);
+            var users = db.Users;
+            var model = new CurrentStatusViewModel(incentives.ToList(), userActivities.ToList(), users.ToList());
 
             return View(model);
         }

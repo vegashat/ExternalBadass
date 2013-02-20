@@ -4,6 +4,22 @@
     ViewBag.Title = "Status";
 }
 
+@section menu
+{
+  
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Users
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu">
+            @foreach(var user in Model.Users.Where(u => u.UserId != Model.Incentives.First().UserId))
+            {
+                <li role="presentation">@Html.ActionLink(user.Username, "status", "useractivity", new{username=user.Username}, new {role="menuitem" })</li>
+            }
+        </ul>
+    </li>  
+}
+
 <section id="current-incentive-progress">
 
     <div class="chart-container">
