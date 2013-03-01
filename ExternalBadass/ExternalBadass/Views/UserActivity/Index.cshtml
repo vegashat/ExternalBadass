@@ -6,7 +6,7 @@
 
 <ul class="nav nav-tabs">
     <li><a href="#list-view" data-toggle="tab">List View</a></li>
-    <li><a href="#calendar-view" data-toggle="tab">Calendar View</a></li>
+    <li><a href="#calendar-view2" data-toggle="tab">Calendar View</a></li>
 </ul>
 
 <div class="tab-content">
@@ -31,14 +31,14 @@
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { userId = item.UserId, activityId = item.ActivityId, date = item.Date })
                         |
-                @Html.ActionLink("Delete", "Delete", new { userId = item.UserId, activityId = item.ActivityId, date = item.Date.ToShortDateString() })
+                        @Html.ActionLink("Delete", "Delete", new { userId = item.UserId, activityId = item.ActivityId, date = item.Date.ToShortDateString() })
                     </td>
                 </tr>
             }
 
         </table>
     </div>
-    <div class="tab-pane active" id="calendar-view">
+    <div class="tab-pane active" id="calendar-view2">
         <div id="calendar"></div>
     </div>   
     <div id='loading' style='display: none'>loading...</div>
@@ -63,7 +63,6 @@
 {
     <script type="text/javascript">
 
-
         var calendar;
 
         $(function ()
@@ -87,12 +86,7 @@
                     $('#add-activity').modal("show")
                 },
                 editable: true,
-                events: "@Url.Action("GetUserActivity", "UserActivity", new { username = ViewBag.Username })",
-                loading: function (bool)
-                {
-                    if (bool) $('#loading').show();
-                    else $('#loading').hide();
-                }
+                events: "@Url.Action("GetUserActivity", "UserActivity", new { username = ViewBag.Username })"
             });            
         });
 
