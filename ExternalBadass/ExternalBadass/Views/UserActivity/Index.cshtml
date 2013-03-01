@@ -1,33 +1,124 @@
 ﻿@model IEnumerable<ExternalBadass.Models.UserActivity>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Current Activity";
 }
 
-<h2>Index</h2>
+<ul class="nav nav-tabs">
+    <li><a href="#list-view" data-toggle="tab">List View</a></li>
+    <li><a href="#calendar-view" data-toggle="tab">Calendar View</a></li>
+</ul>
 
-<p>
-    @Html.ActionLink("Create New", "Create", new { username = ViewBag.Username })
-</p>
-<table class="table table-striped">
-    <tr>
-        <th>Activity</th>
-        <th>Date</th>
-        <th>Points</th>
-        <th></th>
-    </tr>
+<div class="tab-content">
+    <div class="tab-pane" id="list-view">
+        <p>
+            @Html.ActionLink("Create New", "Create", new { username = ViewBag.Username })
+        </p>
+        <table class="table table-striped">
+            <tr>
+                <th>Activity</th>
+                <th>Date</th>
+                <th>Points</th>
+                <th></th>
+            </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.Activity.Name</td>
-            <td>@item.Date.ToShortDateString()</td>
-            <td>@item.Activity.PointValue</td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { userId = item.UserId, activityId = item.ActivityId, date= item.Date }) |
-                @Html.ActionLink("Delete", "Delete", new { userId = item.UserId, activityId = item.ActivityId, date= item.Date.ToShortDateString() })
-            </td>
-        </tr>
-    }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Activity.Name</td>
+                    <td>@item.Date.ToShortDateString()</td>
+                    <td>@item.Activity.PointValue</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { userId = item.UserId, activityId = item.ActivityId, date = item.Date })
+                        |
+                @Html.ActionLink("Delete", "Delete", new { userId = item.UserId, activityId = item.ActivityId, date = item.Date.ToShortDateString() })
+                    </td>
+                </tr>
+            }
 
-</table>
+        </table>
+    </div>
+    <div class="tab-pane active" id="calendar-view">
+        <div id="calendar"></div>
+    </div>   
+    <div id='loading' style='display: none'>loading...</div>
+    <div class="modal hide fade" id="add-activity">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h3>Enter Activity</h3>
+        </div>
+        <div class="modal-body">
+            @{ Html.RenderAction("CreatePartial", "UserActivity", new { username = ViewBag.Username }); }
+            
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">Close</a>
+            <a href="#" class="btn btn-primary" data-dismiss="modal" onclick="saveActivity()">Save changes</a>
+        </div>
+    </div>
+
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+
+        var calendar;
+
+        $(function ()
+        {
+            var date = new Date();
+            var d = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+
+            calendar = $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month'
+                },
+                selectable: true,
+                selectHelper: true,
+                select: function (start, end, allDay)
+                {
+                    $('#UserActivity_Date').val($.fullCalendar.formatDate(start, 'MM/dd/yyyy'));
+                    $('#add-activity').modal("show")
+                },
+                editable: true,
+                events: "@Url.Action("GetUserActivity", "UserActivity", new { username = ViewBag.Username })",
+                loading: function (bool)
+                {
+                    if (bool) $('#loading').show();
+                    else $('#loading').hide();
+                }
+            });            
+        });
+
+        function saveActivity()
+        {
+            var form = $("#create_activity_form");
+            if (form.valid())
+            {
+                $.post(form.attr("action"), form.serialize(), function (response)
+                {
+                    if (response.Success == true)
+                    {
+                        calendar.fullCalendar('renderEvent',
+                            {
+                                title: response.Title,
+                                start: response.Date,
+                                end: response.Date,
+                                allDay: true
+                            },
+                            true // make the event "stick"
+                        );
+                        calendar.fullCalendar('unselect');
+                    }
+                });
+            }
+        }
+
+    </script>
+}

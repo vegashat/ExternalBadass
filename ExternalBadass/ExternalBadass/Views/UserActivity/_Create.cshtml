@@ -1,12 +1,8 @@
 ﻿@model ExternalBadass.ViewModels.UserActivityViewModel
 
-@{
-    ViewBag.Title = "Create";
-}
 
-<h2>Create</h2>
-
-@using (Html.BeginForm()) {
+@using (Html.BeginForm("AddActivity", "UserActivity", FormMethod.Post, new { @id = "create_activity_form" }))
+{
     @Html.ValidationSummary(true)
 
     <fieldset>
@@ -24,7 +20,7 @@
             <label for="UserActivity.ActivityId">Date</label>
         </div>
         <div class="editor-field">
-            @Html.TextBox("UserActivity.Date", DateTime.Now.ToShortDateString(), new { @class = "datepicker" })
+            @Html.TextBox("UserActivity.Date", DateTime.Now.ToShortDateString())
         </div>
          <div class="editor-label">
             <label for="UserActivity.ActivityId">Activity</label>
@@ -32,14 +28,9 @@
         <div class="editor-field">
             @Html.DropDownList("UserActivity.Activity.ActivityId", Model.ActivitySelectList)
         </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
     </fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-
 }

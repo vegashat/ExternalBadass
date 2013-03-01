@@ -25,16 +25,22 @@ namespace ExternalBadass.Controllers
         // GET: /UserActivity/vegashat
         public ActionResult Index(string username)
         {
+            var activities = GetActivityForUser(username);
+
+            ViewBag.Username = username;
+
+            return View(activities);
+        }
+
+        private IEnumerable<UserActivity> GetActivityForUser(string username)
+        {
             IEnumerable<UserActivity> activities = null;
 
             if (db.Users.Any(u => u.Username == username))
             {
                 activities = db.UserActivities.Include(ua => ua.User).Include(ua => ua.Activity).Where(ua => ua.User.Username == username);
             }
-
-            ViewBag.Username = username;
-
-            return View(activities);
+            return activities;
         }
 
         public ActionResult Status(string username)
@@ -75,6 +81,17 @@ namespace ExternalBadass.Controllers
             return View(model);
         }
 
+        public ActionResult CreatePartial(string username)
+        {            
+            var users = db.Users;
+            var activities = db.Activities;
+            var currentUser = users.Include(u => u.Activities).First(u => u.Username == username);
+
+            var model = new UserActivityViewModel(users, activities, currentUser);
+
+            return PartialView("_Create", model);
+        }
+
         //
         // POST: /UserActivity/Create
 
@@ -99,6 +116,34 @@ namespace ExternalBadass.Controllers
             }
 
             return RedirectToAction("Index", new { username = userActivity.User.Username });
+        }
+
+        [HttpPost]
+        public JsonResult AddActivity(UserActivity userActivity)
+        {
+            dynamic response = null;
+
+            try
+            {
+                userActivity.UserId = userActivity.User.UserId;
+                userActivity.ActivityId = userActivity.Activity.ActivityId;
+
+                userActivity.User = db.Users.Find(userActivity.UserId);
+                userActivity.Activity = db.Activities.Find(userActivity.ActivityId);
+
+                db.UserActivities.Add(userActivity);
+                db.SaveChanges();
+
+                _uaService.CalculateIncentives(userActivity.User.Username);
+
+                response = new { Success = true, Title = userActivity.Activity.Name, Date = userActivity.Date.ToShortDateString() };
+            }
+            catch(Exception ex)
+            {
+                response = new { Success = false, Message = ex.Message };
+            }
+
+            return Json(response);
         }
 
         //
@@ -154,6 +199,17 @@ namespace ExternalBadass.Controllers
         {
             db.Dispose();
             base.Dispose(disposing);
+        }
+
+        public JsonResult GetUserActivity(string username)
+        {
+            var activities = GetActivityForUser(username);
+
+            var calendarValues = from a in activities
+                                 select new { title = a.Activity.Name, date=a.Date.ToShortDateString(), start = a.Date.ToShortDateString(), end = a.Date.ToShortDateString(), allDay = true };
+
+            return Json(calendarValues, JsonRequestBehavior.AllowGet);
+
         }
     }
 }
